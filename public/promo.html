@@ -10,6 +10,8 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:#0b1230;font-family:'Noto Sans JP',sans-serif;color:#eaf0ff;max-width:480px;margin:0 auto;}
+/* 日本語を単語の途中で折らない（改行は助詞・読点の後ろだけ。印は下のスクリプトで付ける） */
+body{word-break:keep-all;overflow-wrap:anywhere;line-break:strict;}
 .sec{padding:48px 20px;border-bottom:1px solid rgba(255,255,255,0.05);}
 .lbl{font-size:9px;font-weight:700;letter-spacing:3px;color:#facc15;text-transform:uppercase;margin-bottom:4px;}
 .sech{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;margin-bottom:20px;}
@@ -52,7 +54,7 @@ body{background:#0b1230;font-family:'Noto Sans JP',sans-serif;color:#eaf0ff;max-
 <div class="hero">
   <div class="hero-tag"><span class="live"></span>少年サッカー向け 無料Webアプリ</div>
   <div class="hero-h1">PLAY<em>BOOK</em></div>
-  <p class="hero-desc">8人制ジュニアサッカーの<strong>布陣をシミュレーション</strong>。<br>3Dフィールドでホームとアウェイを見比べる。</p>
+  <p class="hero-desc">8人制ジュニアサッカーの<br><strong>布陣をシミュレーション</strong>。<br>3Dフィールドで、ホームとアウェイを見比べる。</p>
   <a href="https://satoshiatr-blip.github.io/playbook/" target="_blank" style="text-decoration:none;display:block;">
     <div class="cta-box">
       <div class="cta-box-l">インストール不要・完全無料</div>
@@ -74,7 +76,7 @@ body{background:#0b1230;font-family:'Noto Sans JP',sans-serif;color:#eaf0ff;max-
   <div class="steps">
     <div class="step">
       <div class="sn">1</div>
-      <div><div class="st">🏟️ 陣形を選ぶ</div><div class="sd">ホーム・アウェイそれぞれの布陣を選択</div></div>
+      <div><div class="st">🏟️ 陣形を選ぶ</div><div class="sd">ホームとアウェイの布陣を選ぶ</div></div>
       <div class="stag">陣形一覧</div>
     </div>
     <div class="step">
@@ -96,19 +98,19 @@ body{background:#0b1230;font-family:'Noto Sans JP',sans-serif;color:#eaf0ff;max-
   <div class="feats">
     <div class="feat">
       <div class="fi">🏟️</div>
-      <div><div class="ft">複数の陣形プリセット</div><div class="fd">バランス型・攻撃的・守備的など、特徴つきで選べる</div></div>
+      <div><div class="ft">いろいろな陣形</div><div class="fd">バランス型・攻撃的・守備的など、特徴を見ながら選べます</div></div>
     </div>
     <div class="feat">
       <div class="fi">🎮</div>
-      <div><div class="ft">3Dフィールド表示</div><div class="fd">ドラッグで視点を回転、実際の立ち位置感がつかめる</div></div>
+      <div><div class="ft">3Dフィールド表示</div><div class="fd">ドラッグで視点を回すと、実際の立ち位置がイメージしやすくなります</div></div>
     </div>
     <div class="feat">
       <div class="fi">⚖️</div>
-      <div><div class="ft">ホーム/アウェイ比較</div><div class="fd">2つの布陣を同時に配置して対戦をイメージ</div></div>
+      <div><div class="ft">ホームとアウェイを比較</div><div class="fd">2つの布陣を同時に置いて、対戦をイメージできます</div></div>
     </div>
     <div class="feat">
       <div class="fi">🔴</div>
-      <div><div class="ft">役割ごとの色分け</div><div class="fd">GK/DF/MF/FWが色でひと目で分かる</div></div>
+      <div><div class="ft">役割ごとの色分け</div><div class="fd">GK・DF・MF・FWが、色でひと目で分かります</div></div>
     </div>
   </div>
 </div>
@@ -132,5 +134,13 @@ body{background:#0b1230;font-family:'Noto Sans JP',sans-serif;color:#eaf0ff;max-
   </div>
 </div>
 
+<script>
+// 助詞・読点の後ろに改行できる印（ゼロ幅スペース）を入れる。続く文字がひらがなのとき（「できます」の「で」など）と「その」「この」の後ろには入れない
+(function(){
+  var re=/((?:[はがをにでともへや、。」）]|(?<![そこあど])の))(?=[^ぁ-ゟ、。」）！？!?\s])/g;
+  var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT),n;
+  while((n=w.nextNode())){ if(/[぀-鿿]/.test(n.data)) n.data=n.data.replace(re,'$1​'); }
+})();
+</script>
 </body>
 </html>
